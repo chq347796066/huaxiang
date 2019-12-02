@@ -1,0 +1,24 @@
+
+-----添加分区
+alter table fdm_user_wide add partition (dt='2017-01-01') location '/business/2017-01-01';
+-----删除分区  
+alter table fdm_user_wide drop if exists partition(dt='2017-01-01');
+
+
+drop table if exists bussiness.fdm_order;
+create external table bussiness.fdm_order(
+order_id string,		--订单ID
+order_no string,		--订单号
+order_date date,	--订单日期
+user_id string,			--用户ID
+user_name string,		--登录名
+order_money double,		--订单金额
+order_type string,		--订单类型
+order_status string,	--订单状态
+pay_status string,		--支付状态
+order_source string,	--订单来源
+update_time date,	--订单更新时间
+dw_date timestamp
+) partitioned by (dt string)
+row format delimited fields terminated by ',';
+alter table bussiness.fdm_order add partition (dt='2017-01-01') location '/business/fdm_order/2017-01-01';
